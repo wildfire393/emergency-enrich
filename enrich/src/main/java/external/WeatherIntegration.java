@@ -49,7 +49,7 @@ public class WeatherIntegration {
             return json;
         } catch (IOException e) {
             e.printStackTrace();
-            return new JSONObject("Weather data unavailable for specified time and location");
+            return new JSONObject("{\"Error\":\"Weather data unavailable for specified time and location\"}");
         }
     }
 }
