@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+configurations {
+    all {
+        // exclude spring-boot-starter-logging which uses Logback, use Log4J2 instead via spring-boot-starter-log4j2
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        // exclude com.vaadin.external.google:android-json since it is conflicting with org.json:json
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider'
+
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring security dependencies
+    implementation 'com.h2database:h2'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.glassfish:javax.el:3.0.1-b09'
+
+
+    // Spring Data using JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // To map Jackson JsonNode to a JSON/CLOB column
+    implementation 'com.vladmihalcea:hibernate-types-52:2.4.2'
+
+    //JSON
+    implementation 'org.json:json:20180813'
+    implementation 'com.vladmihalcea:hibernate-types-52:2.4.2'
+
+    runtimeOnly    'org.springframework.boot:spring-boot-starter-log4j2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
