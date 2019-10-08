@@ -9,6 +9,7 @@ import org.hibernate.annotations.TypeDefs;
 import org.json.JSONObject;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,26 +38,28 @@ public class Incident {
 
     /** Incident JSON column */
     @Column(columnDefinition = "clob")
+    @Convert(converter = JsonConverter.class)
     private JSONObject incidentJson;
 
     /** Associated Weather column */
     @Column(columnDefinition = "clob")
+    @Convert(converter = JsonConverter.class)
     private JSONObject weather;
 
-    private Timestamp timestamp;
+    private Timestamp timeOfIncident;
 
     /**
      * Constructor for Incident
      * @param incidentJson The incident JSON. Never {@code null}
-     * @param timestamp The timestamp the incident took place. Never {@code null}
+     * @param timeOfIncident The timeOfIncident the incident took place. Never {@code null}
      */
     public Incident (@JsonProperty("incident") JSONObject incidentJson,
                      @JsonProperty("weather") JSONObject weather,
-                     @JsonProperty("timestamp") Timestamp timestamp){
+                     @JsonProperty("timeOfIncident") Timestamp timeOfIncident){
         this.id = UUID.randomUUID();
         this.incidentJson = incidentJson;
         this.weather = weather;
-        this.timestamp = timestamp;
+        this.timeOfIncident = timeOfIncident;
     }
 
     /**
@@ -72,7 +75,7 @@ public class Incident {
         this.id = builder.id;
         this.incidentJson = builder.incidentJson;
         this.weather = builder.weather;
-        this.timestamp = builder.timestamp;
+        this.timeOfIncident = builder.timeOfIncident;
     }
 
     /**
@@ -124,19 +127,19 @@ public class Incident {
     }
 
     /**
-     * Get the timestamp.
-     * @return The timestamp.
+     * Get the timeOfIncident.
+     * @return The timeOfIncident.
      */
     public Timestamp getTimestamp (){
-        return timestamp;
+        return timeOfIncident;
     }
 
     /**
-     * Set the timetsamp
-     * @param timestamp The timestamp to set. Cannot be null.
+     * Set the timeOfIncidenttsamp
+     * @param timeOfIncident The timeOfIncident to set. Cannot be null.
      */
-    public void setTimestamp(Timestamp timestamp){
-        this.timestamp = Objects.requireNonNull(timestamp);
+    public void setTimestamp(Timestamp timeOfIncident){
+        this.timeOfIncident = Objects.requireNonNull(timeOfIncident);
     }
 
     /**
@@ -146,20 +149,20 @@ public class Incident {
         private UUID id;
         private JSONObject incidentJson;
         private JSONObject weather;
-        private Timestamp timestamp;
+        private Timestamp timeOfIncident;
 
         /**
          * Builder with all parameters
          * @param id - The UUID of the Subscription to build.
          * @param incidentJson - The JSON of the incident.
          * @param weather - the JSON of the weather.
-         * @param timestamp - the Timestamp of the incident
+         * @param timeOfIncident - the Timestamp of the incident
          */
-        public Builder(UUID id, JSONObject incidentJson, JSONObject weather, Timestamp timestamp){
+        public Builder(UUID id, JSONObject incidentJson, JSONObject weather, Timestamp timeOfIncident){
             this.id = id;
             this.incidentJson = incidentJson;
             this.weather = weather;
-            this.timestamp = timestamp;
+            this.timeOfIncident = timeOfIncident;
         }
 
         /**
@@ -175,7 +178,7 @@ public class Incident {
             this.id = incident.id;
             this.incidentJson = incident.incidentJson;
             this.weather = incident.weather;
-            this.timestamp = incident.timestamp;
+            this.timeOfIncident = incident.timeOfIncident;
         }
 
         /**
@@ -209,13 +212,21 @@ public class Incident {
         }
 
         /**
-         * Add or modify the timestamp
-         * @param timestamp - The timestamp
+         * Add or modify the timeOfIncident
+         * @param timeOfIncident - The timeOfIncident
          * @return The builder
          */
-        public Builder withTimestamp(Timestamp timestamp){
-            this.timestamp = timestamp;
+        public Builder withTimestamp(Timestamp timeOfIncident){
+            this.timeOfIncident = timeOfIncident;
             return this;
+        }
+
+        /**
+         * Create the actual incident from the Builder
+         * @return the finished Incident
+         */
+        public Incident build() {
+            return new Incident(this);
         }
     }
 }

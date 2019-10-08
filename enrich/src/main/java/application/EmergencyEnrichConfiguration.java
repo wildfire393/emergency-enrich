@@ -11,12 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import repositories.IncidentRepository;
 
 /**
  * Configures the 911 Enrichment REST Web Service
  * and data
  */
-@ComponentScan(basePackages = "rest")
+@ComponentScan(basePackages = "rest, data, repositories")
 @Configuration
 @EnableAutoConfiguration
 @PropertySource("classpath:enrich.properties")
